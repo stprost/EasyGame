@@ -1,8 +1,8 @@
 package com.stprostakov.easygame;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,7 +13,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.Iterator;
 
-public class EasyGame extends ApplicationAdapter {
+public class EasyGame implements Screen {
+
+    final Zachet game;
 
     Texture zachetImage;
     Texture studentImage;
@@ -23,9 +25,9 @@ public class EasyGame extends ApplicationAdapter {
     Array<Rectangle> zachet;
     long lastDropTime;
 
-    @Override
-    public void create() {
-        // загрузка изображений для капли и ведра, 64x64 пикселей каждый
+
+    public EasyGame(final Zachet game1) {
+        this.game =game1;
         zachetImage = new Texture(Gdx.files.internal("core/assets/zachet.png"));
         studentImage = new Texture(Gdx.files.internal("core/assets/student.png"));
 
@@ -46,7 +48,7 @@ public class EasyGame extends ApplicationAdapter {
     private void spawnZachet() {
         Rectangle zachet = new Rectangle();
         zachet.x = MathUtils.random(0, 800 - 64);
-        zachet.y = 480;
+        zachet.y = 416;
         zachet.width = 64;
         zachet.height = 64;
         this.zachet.add(zachet);
@@ -54,7 +56,12 @@ public class EasyGame extends ApplicationAdapter {
     }
 
     @Override
-    public void render() {
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
         Gdx.gl.glClearColor(1f, 0.8f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -64,8 +71,8 @@ public class EasyGame extends ApplicationAdapter {
 
         batch.begin();
         batch.draw(studentImage, student.x, student.y);
-        for (Rectangle raindrop : zachet) {
-            batch.draw(zachetImage, raindrop.x, raindrop.y);
+        for (Rectangle zachets : zachet) {
+            batch.draw(zachetImage, zachets.x, zachets.y);
         }
         batch.end();
 
@@ -111,5 +118,10 @@ public class EasyGame extends ApplicationAdapter {
 
     @Override
     public void resume() {
+    }
+
+    @Override
+    public void hide() {
+
     }
 }
